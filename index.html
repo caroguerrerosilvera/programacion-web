@@ -15,8 +15,8 @@
 
         <div>
             <form id="palindromeForm" class="flex flex-col space-y-4">
-                <label for="inputText" class="text-gray-700">Ingrese una cadena de texto:</label>
-                <input type="text" id="inputText"
+                <label for="palindromeText" class="text-gray-700">Ingrese una cadena de texto:</label>
+                <input type="text" id="palindromeText"
                     class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required>
                 <button type="submit"
@@ -48,10 +48,31 @@
         <p id="resultMayor" class="mt-4 text-center text-lg font-medium"></p>
     </section>
 
+    <section class="p-8">
+        <h1 class="text-2xl font-semibold text-gray-800 mb-6">#3: Vocales en una frase</h1>
+
+
+        <form id="vowelForm" class="flex flex-col space-y-4">
+            <label for="vowelsText" class="text-gray-700">Ingrese una frase:</label>
+            <input type="text" id="vowelsText"
+                class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+
+            <button type="submit"
+                class="py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                Mostrar vocales
+            </button>
+        </form>
+        <p id="resultVocales" class="mt-4 text-center text-lg font-medium"></p>
+
+    </section>
+
+
     <script>
 
         document.getElementById("palindromeForm").addEventListener("submit", isPalindrome);
         document.getElementById("numberForm").addEventListener("submit", compareNumbers);
+        document.getElementById("vowelForm").addEventListener("submit", extractVowels);
 
         /**
          * Verifica si el texto ingresado en el formulario es un palíndromo.
@@ -66,7 +87,7 @@
          */
         function isPalindrome(event) {
             event.preventDefault();
-            const inputText = document.getElementById("inputText").value;
+            const inputText = document.getElementById("palindromeText").value;
             const cleanedText = inputText.toLowerCase().replace(/[\W_]/g, '');
             const isPalindrome = cleanedText === cleanedText.split('').reverse().join('');
             document.getElementById("resultPalindrome").textContent = isPalindrome ? "¡Es un palíndromo 🥳!" : "No es un palíndromo 😪.";
@@ -98,6 +119,34 @@
 
             // Mostrar el resultado en el elemento con id "result"
             document.getElementById("resultMayor").textContent = resultMessage;
+        }
+
+        /**
+         * Extrae y muestra las vocales que aparecen en una frase.
+         * 
+         * El programa toma la frase ingresada, filtra las vocales (tanto mayúsculas como minúsculas),
+         * y las muestra sin repetir.
+         * 
+         * @param {Event} event - El objeto del evento que es disparado por el envío del formulario.
+         * @returns {void} - No retorna ningún valor, pero actualiza el contenido de un elemento con el id "result".
+         */
+        function extractVowels(event) {
+            // Prevenir el comportamiento predeterminado del formulario (evitar el refresco de la página)
+            event.preventDefault();
+
+            // Obtener el valor de la frase ingresada
+            const inputText = document.getElementById("vowelsText").value.toLowerCase();
+
+            // Definir las vocales
+            const vowels = ['a', 'e', 'i', 'o', 'u'];
+
+            // Filtrar las vocales que aparecen en la frase
+            const foundVowels = [...new Set(inputText.split('').filter(char => vowels.includes(char)))];
+
+            // Si se encontraron vocales, mostrar las vocales encontradas, de lo contrario mostrar mensaje de no encontrado
+            const resultMessage = foundVowels.length > 0 ? `Vocales encontradas: ${foundVowels.join(', ')}` : "No se encontraron vocales.";
+
+            document.getElementById("resultVocales").textContent = resultMessage;
         }
     </script>
 </body>
