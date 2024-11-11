@@ -67,12 +67,32 @@
 
     </section>
 
+    <section class="p-8">
+        <h1 class="text-2xl font-semibold text-gray-800 mb-6">#4: Contar vocales</h1>
+
+        <div>
+            <form id="vowelCountForm" class="flex flex-col space-y-4">
+                <label for="countVowelsText" class="text-gray-700">Ingrese una frase:</label>
+                <input type="text" id="countVowelsText"
+                    class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
+
+                <button type="submit"
+                    class="py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Contar vocales
+                </button>
+            </form>
+            <p id="result" class="mt-4 text-center text-lg font-medium"></p>
+        </div>
+    </section>
+
 
     <script>
 
         document.getElementById("palindromeForm").addEventListener("submit", isPalindrome);
         document.getElementById("numberForm").addEventListener("submit", compareNumbers);
         document.getElementById("vowelForm").addEventListener("submit", extractVowels);
+        document.getElementById("vowelCountForm").addEventListener("submit", countVowels);
 
         /**
          * Verifica si el texto ingresado en el formulario es un palíndromo.
@@ -147,6 +167,56 @@
             const resultMessage = foundVowels.length > 0 ? `Vocales encontradas: ${foundVowels.join(', ')}` : "No se encontraron vocales.";
 
             document.getElementById("resultVocales").textContent = resultMessage;
+        }
+
+        /**
+         * Cuenta cuántas veces aparece cada vocal en una frase.
+         * 
+         * Este programa toma la frase ingresada, recorre cada carácter y cuenta las vocales (tanto mayúsculas como minúsculas),
+         * y muestra cuántas veces aparece cada una.
+         * 
+         * @param {Event} event - El objeto del evento que es disparado por el envío del formulario.
+         * @returns {void} - No retorna ningún valor, pero actualiza el contenido de un elemento con el id "result".
+         */
+        function countVowels(event) {
+            // Prevenir el comportamiento predeterminado del formulario (evitar el refresco de la página)
+            event.preventDefault();
+
+            // Obtener el valor de la frase ingresada
+            const inputText = document.getElementById("countVowelsText").value.toLowerCase();
+
+            // Definir las vocales y un objeto para contar sus ocurrencias
+            const vowels = ['a', 'e', 'i', 'o', 'u'];
+            const vowelCount = { a: 0, e: 0, i: 0, o: 0, u: 0 };
+
+            // Recorrer cada carácter de la frase y contar las vocales
+            for (let char of inputText) {
+                if (vowels.includes(char)) {
+                    vowelCount[char]++;
+                }
+            }
+
+            // Construir el mensaje de resultado con las vocales y sus respectivas cantidades
+            let resultMessage = "Frecuencia de vocales en la frase: ";
+            let hasVowels = false;
+
+            for (let vowel of vowels) {
+                if (vowelCount[vowel] > 0) {
+                    resultMessage += `${vowel.toUpperCase()}: ${vowelCount[vowel]} veces, `;
+                    hasVowels = true;
+                }
+            }
+
+            // Si no se encontraron vocales, mostrar un mensaje diferente
+            if (!hasVowels) {
+                resultMessage = "No se encontraron vocales en la frase.";
+            } else {
+                // Eliminar la última coma y espacio
+                resultMessage = resultMessage.slice(0, -2);
+            }
+
+            // Mostrar el resultado en el elemento con id "result"
+            document.getElementById("result").textContent = resultMessage;
         }
     </script>
 </body>
