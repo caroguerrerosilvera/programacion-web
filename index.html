@@ -22,13 +22,36 @@
                 <button type="submit"
                     class="py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Verificar</button>
             </form>
-            <p id="result" class="mt-4 text-center text-lg font-medium"></p>
+            <p id="resultPalindrome" class="mt-4 text-center text-lg font-medium"></p>
         </div>
+    </section>
+
+    <section class="p-8">
+        <h1 class="text-2xl font-semibold text-gray-800 mb-6">#2: Número mayor</h1>
+
+        <form id="numberForm" class="flex flex-col space-y-4">
+            <label for="num1" class="text-gray-700">Ingrese el primer número:</label>
+            <input type="number" id="num1"
+                class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+
+            <label for="num2" class="text-gray-700">Ingrese el segundo número:</label>
+            <input type="number" id="num2"
+                class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+
+            <button type="submit"
+                class="py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                Verificar
+            </button>
+        </form>
+        <p id="resultMayor" class="mt-4 text-center text-lg font-medium"></p>
     </section>
 
     <script>
 
         document.getElementById("palindromeForm").addEventListener("submit", isPalindrome);
+        document.getElementById("numberForm").addEventListener("submit", compareNumbers);
 
         /**
          * Verifica si el texto ingresado en el formulario es un palíndromo.
@@ -46,7 +69,35 @@
             const inputText = document.getElementById("inputText").value;
             const cleanedText = inputText.toLowerCase().replace(/[\W_]/g, '');
             const isPalindrome = cleanedText === cleanedText.split('').reverse().join('');
-            document.getElementById("result").textContent = isPalindrome ? "¡Es un palíndromo 🥳!" : "No es un palíndromo 😪.";
+            document.getElementById("resultPalindrome").textContent = isPalindrome ? "¡Es un palíndromo 🥳!" : "No es un palíndromo 😪.";
+        }
+
+        /**
+         * Compara dos números ingresados y muestra cuál es el mayor.
+         * 
+         * @param {Event} event - El objeto del evento que es disparado por el envío del formulario.
+         * @returns {void} - No retorna ningún valor, pero actualiza el contenido de un elemento con el id "result".
+         */
+        function compareNumbers(event) {
+            // Prevenir el comportamiento predeterminado del formulario (evitar el refresco de la página)
+            event.preventDefault();
+
+            // Obtener los valores de los dos números
+            const num1 = parseFloat(document.getElementById("num1").value);
+            const num2 = parseFloat(document.getElementById("num2").value);
+
+            // Comparar los dos números y asignar el mensaje correspondiente
+            let resultMessage;
+            if (num1 > num2) {
+                resultMessage = `El número mayor es: ${num1}`;
+            } else if (num2 > num1) {
+                resultMessage = `El número mayor es: ${num2}`;
+            } else {
+                resultMessage = "Los dos números son iguales.";
+            }
+
+            // Mostrar el resultado en el elemento con id "result"
+            document.getElementById("resultMayor").textContent = resultMessage;
         }
     </script>
 </body>
