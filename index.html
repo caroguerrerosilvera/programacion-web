@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio: Tecnologías JavaScript y AJAX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <section class="p-8">
+        <h1 class="text-2xl font-semibold text-gray-800 mb-6">#1: Detector de Palíndromos</h1>
+
+        <div>
+            <form id="palindromeForm" class="flex flex-col space-y-4">
+                <label for="inputText" class="text-gray-700">Ingrese una cadena de texto:</label>
+                <input type="text" id="inputText"
+                    class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
+                <button type="submit"
+                    class="py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Verificar</button>
+            </form>
+            <p id="result" class="mt-4 text-center text-lg font-medium"></p>
+        </div>
+    </section>
+
+    <script>
+
+        document.getElementById("palindromeForm").addEventListener("submit", isPalindrome);
+
+        /**
+         * Verifica si el texto ingresado en el formulario es un palíndromo.
+         * 
+         * Un palíndromo es una palabra, frase o secuencia que se lee igual hacia adelante
+         * que hacia atrás, ignorando los espacios, signos de puntuación y mayúsculas/minúsculas.
+         * 
+         * Este método toma el valor del campo de texto, lo limpia y lo compara con su reverso.
+         * 
+         * @param {Event} event - El objeto del evento que es disparado por el envío del formulario.
+         * @returns {void} - No retorna ningún valor, pero actualiza el contenido de un elemento con el id "result".
+         */
+        function isPalindrome(event) {
+            event.preventDefault();
+            const inputText = document.getElementById("inputText").value;
+            const cleanedText = inputText.toLowerCase().replace(/[\W_]/g, '');
+            const isPalindrome = cleanedText === cleanedText.split('').reverse().join('');
+            document.getElementById("result").textContent = isPalindrome ? "¡Es un palíndromo 🥳!" : "No es un palíndromo 😪.";
+        }
+    </script>
+</body>
+
+</html>
