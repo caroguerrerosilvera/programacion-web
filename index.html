@@ -10,8 +10,9 @@
 </head>
 
 <body>
+    <h1 class="text-4xl font-bold text-blue-500 text-center">Javascript</h1>
     <section class="p-8">
-        <h1 class="text-2xl font-semibold text-gray-800 mb-6">#1: Detector de Palíndromos</h1>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">#1: Detector de Palíndromos</h2>
 
         <div>
             <form id="palindromeForm" class="flex flex-col space-y-4">
@@ -27,7 +28,7 @@
     </section>
 
     <section class="p-8">
-        <h1 class="text-2xl font-semibold text-gray-800 mb-6">#2: Número mayor</h1>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">#2: Número mayor</h2>
 
         <form id="numberForm" class="flex flex-col space-y-4">
             <label for="num1" class="text-gray-700">Ingrese el primer número:</label>
@@ -49,7 +50,7 @@
     </section>
 
     <section class="p-8">
-        <h1 class="text-2xl font-semibold text-gray-800 mb-6">#3: Vocales en una frase</h1>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">#3: Vocales en una frase</h2>
 
 
         <form id="vowelForm" class="flex flex-col space-y-4">
@@ -68,7 +69,7 @@
     </section>
 
     <section class="p-8">
-        <h1 class="text-2xl font-semibold text-gray-800 mb-6">#4: Contar vocales</h1>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">#4: Contar vocales</h2>
 
         <div>
             <form id="vowelCountForm" class="flex flex-col space-y-4">
@@ -86,6 +87,51 @@
         </div>
     </section>
 
+    <h1 class="text-4xl font-bold text-blue-500 text-center">Ajax</h1>
+
+    <section class="p-8">
+        <h1 class="text-2xl font-semibold text-gray-800 mb-6">Cargar Contenidos de la URL</h1>
+
+        <div>
+            <form id="ajaxForm" class="flex flex-col space-y-4">
+                <label for="urlInput" class="text-gray-700">URL a cargar:</label>
+                <input type="text" id="urlInput"
+                    class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
+
+                <button type="submit"
+                    class="py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Mostrar Contenidos
+                </button>
+            </form>
+        </div>
+
+        <!-- Zona de estados de la petición -->
+        <div class="mt-8">
+            <h2 class="text-xl font-semibold">Estado de la Petición</h2>
+            <p id="requestStatus" class="mt-2 text-lg text-gray-700">No iniciada</p>
+        </div>
+
+        <!-- Zona de cabeceras HTTP -->
+        <div class="mt-8">
+            <h2 class="text-xl font-semibold">Cabeceras HTTP</h2>
+            <pre id="responseHeaders" class="bg-gray-100 p-4 rounded-md"></pre>
+        </div>
+
+        <!-- Zona del código de estado -->
+        <div class="mt-8">
+            <h2 class="text-xl font-semibold">Código de Estado</h2>
+            <pre id="statusCode" class="bg-gray-100 p-4 rounded-md"></pre>
+        </div>
+
+        <!-- Zona de contenidos -->
+        <div class="mt-8">
+            <h2 class="text-xl font-semibold">Contenido de la Respuesta</h2>
+            <pre id="responseContent" class="bg-gray-100 p-4 rounded-md"></pre>
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
 
@@ -218,6 +264,59 @@
             // Mostrar el resultado en el elemento con id "result"
             document.getElementById("result").textContent = resultMessage;
         }
+
+        $(document).ready(function () {
+            // Al cargar la página, establecer la URL de la página actual en el campo de texto
+            $('#urlInput').val(window.location.href);
+
+            // Manejar el envío del formulario
+            $('#ajaxForm').on('submit', function (event) {
+                event.preventDefault();  // Prevenir el comportamiento por defecto del formulario
+
+                var url = $('#urlInput').val();  // Obtener la URL del campo de texto
+
+                // Cambiar el estado de la petición a 'Cargando'
+                $('#requestStatus').text('Cargando...');
+
+                // Hacer la solicitud AJAX
+                $.ajax({
+                    url: url,  // Usamos la URL ingresada por el usuario
+                    type: 'GET',  // Tipo de solicitud (GET)
+                    dataType: 'html',  // Esperamos una respuesta en formato HTML
+                    success: function (response, status, xhr) {
+                        // Mostrar contenido de la respuesta
+                        $('#responseContent').text(response);
+
+                        // Mostrar cabeceras HTTP de la respuesta
+                        var headers = xhr.getAllResponseHeaders();
+                        $('#responseHeaders').text(headers);
+
+                        // Mostrar código de estado de la respuesta
+                        var statusCode = xhr.status;
+                        $('#statusCode').text(statusCode + ' ' + xhr.statusText);
+
+                        // Cambiar el estado de la petición a 'Completada'
+                        $('#requestStatus').text('Completada');
+                    },
+                    error: function (xhr, status, error) {
+                        // En caso de error, mostrar el mensaje de error
+                        $('#responseContent').text('Error: ' + error);
+
+                        // Mostrar cabeceras HTTP de la respuesta si hay error
+                        var headers = xhr.getAllResponseHeaders();
+                        $('#responseHeaders').text(headers);
+
+                        // Mostrar el código de estado de la respuesta
+                        var statusCode = xhr.status;
+                        $('#statusCode').text(statusCode + ' ' + xhr.statusText);
+
+                        // Cambiar el estado de la petición a 'Error'
+                        $('#requestStatus').text('Error');
+                    }
+                });
+            });
+        });
+
     </script>
 </body>
 
